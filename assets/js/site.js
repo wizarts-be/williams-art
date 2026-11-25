@@ -224,7 +224,7 @@
   const openNl = () => { if (!nl.hidden || store.get('nl')) return; nl.hidden = false; nl.classList.add('is-in'); };
   $('.nl-x').addEventListener('click', () => { nl.hidden = true; store.set('nl', 1); });
   $('.nl-f').addEventListener('submit', e => { e.preventDefault(); e.target.hidden = true; $('.nl-ok', nl).hidden = false; store.set('nl', 1); setTimeout(() => nl.hidden = true, 2600); });
-  const trigger = $('.process') || $('.gal') || $('.ft');
+  const trigger = $('.process');
   if (trigger && !store.get('nl')) new IntersectionObserver(([e], o) => { if (e.isIntersecting) { setTimeout(openNl, 1200); o.disconnect(); } }).observe(trigger);
 
   if (hasG) addEventListener('load', () => ScrollTrigger.refresh());

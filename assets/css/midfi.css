@@ -1,0 +1,34 @@
+/* Structuurschetsen (MIDFI) van de pagina's na de homepage.
+   Eén smalle kolom, veel lucht, grijze vlakken. Gebruikt de header en footer van de echte site. */
+.mf{max-width:640px;margin:0 auto;padding:clamp(70px,10vw,140px) var(--gut) clamp(100px,14vw,200px)}
+.mf h1{font:400 clamp(44px,6vw,80px)/1 var(--display);margin:0 0 clamp(40px,6vw,72px)}
+.mf h2{font:400 26px/1.2 var(--display);margin:clamp(70px,9vw,120px) 0 14px}
+.mf-box{background:#ebe9e6;display:flex;align-items:flex-end;padding:14px;max-height:520px;margin:0 0 clamp(56px,8vw,96px)}
+.mf-box span{font-size:13px;color:#8a8783}
+.mf-text{color:var(--mute);max-width:40ch;margin:-36px 0 clamp(56px,8vw,96px)}
+h1 + .mf-text,h2 + .mf-text{margin-top:0}
+.mf-work{display:block;margin-bottom:clamp(56px,8vw,96px)}
+.mf-work .mf-box{margin:0 0 12px}
+.mf-work p{margin:0;font-size:15px;color:var(--mute)}
+.mf-work b{font:400 18px var(--display);color:var(--ink);margin-right:8px}
+.mf-work:hover b{color:var(--rust)}
+.mf-filter{display:flex;gap:22px;font-size:15px;color:var(--mute);margin:-30px 0 clamp(50px,7vw,80px)}
+.mf-filter b{font-weight:400;color:var(--ink);border-bottom:1px solid var(--ink)}
+.mf-more{color:var(--mute);font-size:15px;margin:0 0 clamp(56px,8vw,96px)}
+.mf-back{font-size:14px;color:var(--mute);margin:0 0 24px}
+.mf-facts{font-size:16px;line-height:1.8;margin:-40px 0 clamp(40px,6vw,64px)}
+.mf-big{font:400 clamp(22px,2.6vw,32px)/1.4 var(--display);margin:0 0 20px}
+.mf-steps,.mf-years,.mf-list{list-style:none;margin:0 0 clamp(56px,8vw,96px);padding:0;display:grid;gap:12px;font-size:17px}
+.mf-steps{counter-reset:s}
+.mf-years b{font:400 17px var(--display);display:inline-block;width:64px}
+.mf-list li{color:var(--ink)}
+.mf-form{display:grid;gap:26px;margin:40px 0 30px}
+.mf-form span{border-bottom:1px solid var(--ink);padding:8px 0;font-size:15px;color:var(--mute)}
+.mf-btn{margin:0 0 clamp(56px,8vw,96px)}
+.mf-btn a{display:inline-block;border:1px solid var(--ink);padding:15px 22px;font-size:15px;transition:background .3s,color .3s}
+.mf-btn a:hover{background:var(--ink);color:var(--paper)}
+.mf-next{margin:0;padding-top:40px;border-top:1px solid var(--line)}
+.mf-next a{font-size:14px;color:var(--mute)}
+.mf-next b{font:400 clamp(30px,4vw,48px)/1.1 var(--display);color:var(--ink)}
+.mf-next a:hover b{color:var(--rust)}
+.mf-tag{position:fixed;right:16px;bottom:16px;z-index:60;margin:0;padding:7px 12px;background:var(--ink);color:var(--paper);font-size:12px;letter-spacing:.04em}

@@ -504,3 +504,7 @@ Jasper: de homepage is goed. De andere pagina's waren nog niet aan de orde en zi
 
 - **Navigatie:** nu exact die van de schets (`info/williams-website.html`), met de lettertypes Jost en Tenor. Een hamburger links klapt de links horizontaal open (Werk, Agenda, Over William, Opdrachten, Contact, Instagram). Werk opent een submenu onder de header (Alle werken, Cortenstalen beelden, Abstracte tuinbeelden, Grote tuinbeelden). Rechts staan het kleine woordmerk (op de homepage pas zichtbaar na scrollen) en de taalkiezer met bolletje. Op mobiel opent het menu over het volledige scherm.
 - **Links:** zolang enkel de homepage bestaat, zet de build alle interne links om naar `/`. Dat gebeurt in de functie `write` in `scripts/build.mjs`; die regel moet weg zodra er weer pagina's bijkomen.
+
+## 16. Structuurschetsen in de site (25/11/2026)
+
+De eerste MIDFI (losse map, kolommen, veel notities) vond Jasper te chaotisch, en die is verwijderd. Nu bouwt `scripts/build.mjs` voor elke pagina na de homepage een rustige structuurschets op de echte URL: /werk/, /portfolio/<werk>/ (34), de 3 categoriepagina's, /opdrachten/, /over-william/, /agenda/ en /contact/. Elke schets is één smalle kolom met grijze vlakken en weinig tekst, met de echte header en footer, een label "Structuurschets" en noindex. De CSS staat in `assets/css/midfi.css`. De homepage linkt er gewoon naartoe. Links naar pagina's die niet bestaan (privacy, cookies) gaan naar home. De nieuwsbrief-pop-up verschijnt alleen op de homepage.

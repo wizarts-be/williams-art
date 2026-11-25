@@ -71,7 +71,7 @@ function shell({ title, desc, body, active = '', bodyClass = '' }) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Tenor+Sans&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/light/style.css">
-<link rel="stylesheet" href="/assets/css/site.css">
+<link rel="stylesheet" href="/assets/css/site.css">${bodyClass === 'is-mf' ? '\n<link rel="stylesheet" href="/assets/css/midfi.css">\n<meta name="robots" content="noindex">' : ''}
 </head>
 <body class="${bodyClass}">
 <a class="skip" href="#main">Naar de inhoud</a>
@@ -229,18 +229,113 @@ ${strip(STRIP)}
   return shell({ title: 'Williams · beelden van William Roobrouck', desc: 'Beelden in cortenstaal, staal, brons, licht en vuur van William Roobrouck, gemaakt in zijn atelier in Laarne. Werk uit de collectie of op maat.', body, bodyClass: 'is-home' });
 }
 
+/* ---------- MIDFI: structuurschetsen van de andere pagina's ----------
+   Bewust rustig: \u00e9\u00e9n kolom, grijze vlakken, weinig tekst. Geen afgewerkt ontwerp. */
+const mfBox = (label, ratio = '4/3') => `<div class="mf-box" style="aspect-ratio:${ratio}"><span>${esc(label)}</span></div>`;
+const mfPage = (title, body, active) => shell({ title: `${title} \u00b7 Williams (structuurschets)`, desc: `Structuurschets van de pagina ${title}.`, body: `<div class="mf">${body}</div><p class="mf-tag">Structuurschets</p>`, active, bodyClass: 'is-mf' });
+
+function mfWerk() {
+  const first = works.slice(0, 5);
+  return mfPage('Werk', `
+  <h1>Werk</h1>
+  <p class="mf-filter"><b>Alle</b><span>Cortenstaal</span><span>Abstract</span><span>Groot</span></p>
+  ${first.map(w => `<a class="mf-work" href="${workUrl(w)}">${mfBox(w.title, `${w.cover.w}/${w.cover.h}`)}<p><b>${esc(w.title)}</b> ${esc([w.material && w.material.split(',')[0].replace(' (ArcelorMittal)', ''), w.year].filter(Boolean).join(', '))}</p></a>`).join('')}
+  <p class="mf-more">En zo verder: alle ${works.length} werken, \u00e9\u00e9n voor \u00e9\u00e9n.</p>`, 'werk');
+}
+
+function mfWerkpagina(w, i) {
+  const next = works[(i + 1) % works.length];
+  const spec = SPECS[w.slug];
+  const facts = [...(spec ? spec.rows.slice(0, 2).map(r => r[1]) : []), w.year, 'Prijs op aanvraag'].filter(Boolean);
+  return mfPage(w.title, `
+  <p class="mf-back"><a href="/werk/">Alle werken</a></p>
+  <h1>${esc(w.title)}</h1>
+  ${mfBox('Hoofdbeeld', `${w.cover.w}/${w.cover.h}`)}
+  <p class="mf-facts">${facts.map(esc).join('<br>')}</p>
+  <p class="mf-text">${w.story.length ? 'Het verhaal van het werk, in een paar zinnen.' : 'Korte tekst over het werk (nog aan te leveren door William).'}</p>
+  ${mfBox('Beeld', '3/2')}
+  ${mfBox('Beeld', '4/5')}
+  ${w.makingOf.length ? mfBox('In het atelier', '3/2') : ''}
+  <p class="mf-btn"><a href="/contact/">Informeer naar dit werk</a></p>
+  <p class="mf-next"><a href="${workUrl(next)}">Volgend werk<br><b>${esc(next.title)}</b></a></p>`, 'werk');
+}
+
+function mfCategorie(key) {
+  const c = CATS[key], list = works.filter(w => w.categories.includes(key)).slice(0, 3);
+  return mfPage(c.t, `
+  <p class="mf-back"><a href="/werk/">Alle werken</a></p>
+  <h1>${esc(c.t)}</h1>
+  <p class="mf-text">E\u00e9n zin over ${c.short === 'Groot' ? 'grote tuinbeelden' : c.short === 'Abstract' ? 'abstracte tuinbeelden' : 'cortenstaal'}.</p>
+  ${list.map(w => `<a class="mf-work" href="${workUrl(w)}">${mfBox(w.title, `${w.cover.w}/${w.cover.h}`)}<p><b>${esc(w.title)}</b></p></a>`).join('')}
+  <p class="mf-more">En de andere werken uit deze reeks.</p>
+  <p class="mf-text">Uitleg over het materiaal en werk op maat. Deze tekst bestaat al en blijft staan voor Google.</p>
+  <p class="mf-btn"><a href="/contact/">Neem contact op</a></p>`, key);
+}
+
+function mfOpdrachten() {
+  return mfPage('Opdrachten', `
+  <h1>Opdrachten</h1>
+  <p class="mf-text">Een beeld dat precies past bij de plek.</p>
+  ${mfBox('Werk in een tuin', '3/2')}
+  <h2>Tuin en bedrijf</h2>
+  <p class="mf-text">Twee zinnen over een werk op maat.</p>
+  ${mfBox('Werk op een event', '3/2')}
+  <h2>Events</h2>
+  <p class="mf-text">Twee zinnen, met Tomorrowland als voorbeeld.</p>
+  <h2>Zo verloopt het</h2>
+  <ol class="mf-steps"><li>Op de plek</li><li>Schets en voorstel</li><li>In het atelier</li><li>Fundering</li><li>Plaatsing</li></ol>
+  <p class="mf-btn"><a href="/contact/">Neem contact op</a></p>`, 'opdrachten');
+}
+
+function mfOver() {
+  return mfPage('Over William', `
+  <h1>William Roobrouck</h1>
+  ${mfBox('Video van William', '16/9')}
+  <p class="mf-text">Een korte tekst over William: van het atelier van zijn grootvader tot vandaag.</p>
+  <ol class="mf-years"><li><b>1977</b> Tienen</li><li><b>2008</b> Laarne</li><li><b>2012</b> Tomorrowland</li><li><b>2019</b> Londen</li><li><b>2024</b> Fujirebio</li></ol>
+  ${mfBox('Foto van William', '4/5')}`, 'over');
+}
+
+function mfAgenda() {
+  return mfPage('Agenda', `
+  <h1>Agenda</h1>
+  <h2>2024</h2>
+  <ul class="mf-list"><li>Monumentaal werk, Fujirebio</li><li>Tentoonstelling, Laarne</li><li>Kunstenroute Kwa-art</li></ul>
+  ${mfBox('Foto', '3/2')}
+  <h2>2022</h2>
+  <ul class="mf-list"><li>Bi\u00ebnnale Artbox Expo, Veneti\u00eb</li><li>Tuindagen, Beervelde</li></ul>
+  <p class="mf-more">Eerdere jaren klappen open.</p>`, 'agenda');
+}
+
+function mfContact() {
+  return mfPage('Contact', `
+  <h1>Contact</h1>
+  <p class="mf-big">roobrouck.william@gmail.com<br>0497 53 51 58</p>
+  <p class="mf-text">Veldstraat 9, 9270 Laarne</p>
+  <div class="mf-form"><span>Naam</span><span>E-mail</span><span>Bericht</span></div>
+  <p class="mf-btn"><a>Verstuur</a></p>`, 'contact');
+}
+
 /* ---------- Schrijven ---------- */
-// Enkel de homepage. Andere pagina's volgen pas na akkoord op de homepage.
+const KNOWN = /^\/(werk|portfolio\/[^/"]+|opdrachten|over-william|agenda|contact|cortenstaal-tuinkunst|abstracte-beelden-tuin|grote-tuinbeelden)\/$/;
 function write(rel, html) {
   if (/[\u2014\u2013]/.test(html)) console.warn('Let op: em/en-dash in', rel || 'home');
   const f = path.join(OUT, rel, 'index.html');
   fs.mkdirSync(path.dirname(f), { recursive: true });
-  html = html.replace(/href="\/(?!assets\/)[^"#]+[^"]*"/g, 'href="/"'); // enkel home bestaat: interne links naar home
-  html = html.split('"/assets/').join(`"${BASE}assets/`).split(', /assets/').join(`, ${BASE}assets/`).split('href="/"').join(`href="${BASE}"`);
+  // Links naar pagina's die (nog) niet bestaan gaan naar home
+  html = html.replace(/href="(\/(?!assets\/)[^"#]*)"/g, (m, u) => (u === '/' || KNOWN.test(u)) ? m : 'href="/"');
+  html = html.replace(/(href|src|poster|data-full|data-img)="\//g, `$1="${BASE}`).split(', /assets/').join(`, ${BASE}assets/`);
   fs.writeFileSync(f, html);
 }
 fs.rmSync(OUT, { recursive: true, force: true });
 write('', home());
+write('werk', mfWerk());
+works.forEach((w, i) => write(`portfolio/${w.slug}`, mfWerkpagina(w, i)));
+Object.keys(CATS).forEach(k => write(k, mfCategorie(k)));
+write('opdrachten', mfOpdrachten());
+write('over-william', mfOver());
+write('agenda', mfAgenda());
+write('contact', mfContact());
 for (const d of ['assets/css', 'assets/js', 'assets/img', 'assets/video', 'assets/brand']) {
   fs.mkdirSync(path.dirname(OUT + d), { recursive: true });
   fs.symlinkSync(root + d, OUT + d);
