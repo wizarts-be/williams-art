@@ -230,90 +230,93 @@ ${strip(STRIP)}
 }
 
 /* ---------- MIDFI: structuurschetsen van de andere pagina's ----------
-   Bewust rustig: \u00e9\u00e9n kolom, grijze vlakken, weinig tekst. Geen afgewerkt ontwerp. */
-const mfBox = (label, ratio = '4/3') => `<div class="mf-box" style="aspect-ratio:${ratio}"><span>${esc(label)}</span></div>`;
-const mfPage = (title, body, active) => shell({ title: `${title} \u00b7 Williams (structuurschets)`, desc: `Structuurschets van de pagina ${title}.`, body: `<div class="mf">${body}</div><p class="mf-tag">Structuurschets</p>`, active, bodyClass: 'is-mf' });
+   Grijze vlakken, weinig tekst, elke pagina een eigen compositie. Geen lijsten met lijntjes. */
+const mfBox = (label, ratio = '4/3', cls = '') => `<div class="mf-box ${cls}" style="aspect-ratio:${ratio}"><span>${esc(label)}</span></div>`;
+const mfPage = (title, body, active) => shell({ title: `${title} · Williams (structuurschets)`, desc: `Structuurschets van de pagina ${title}.`, body: `<div class="mf">${body}</div><p class="mf-tag">Structuurschets</p>`, active, bodyClass: 'is-mf' });
+const mfWork = (w, cls = '') => `<a class="mf-w ${cls}" href="${workUrl(w)}">${mfBox(w.title, `${w.cover.w}/${w.cover.h}`)}<span class="mf-cap"><b>${esc(w.title)}</b>${esc(w.year || '')}</span></a>`;
+// Ritme voor verspreide werken: begin-kolom en breedte op 12 kolommen
+const SCAT = ['a1', 'a2', 'a3', 'a4', 'a5', 'a6'];
 
 function mfWerk() {
-  const first = works.slice(0, 5);
   return mfPage('Werk', `
-  <h1>Werk</h1>
-  <p class="mf-filter"><b>Alle</b><span>Cortenstaal</span><span>Abstract</span><span>Groot</span></p>
-  ${first.map(w => `<a class="mf-work" href="${workUrl(w)}">${mfBox(w.title, `${w.cover.w}/${w.cover.h}`)}<p><b>${esc(w.title)}</b> ${esc([w.material && w.material.split(',')[0].replace(' (ArcelorMittal)', ''), w.year].filter(Boolean).join(', '))}</p></a>`).join('')}
-  <p class="mf-more">En zo verder: alle ${works.length} werken, \u00e9\u00e9n voor \u00e9\u00e9n.</p>`, 'werk');
+  <header class="mf-head"><h1>Werk</h1><p class="mf-filter"><b>Alle</b> <span>Cortenstaal</span> <span>Abstract</span> <span>Groot</span></p></header>
+  <div class="mf-scatter">${works.map((w, i) => mfWork(w, SCAT[i % SCAT.length])).join('')}</div>`, 'werk');
 }
 
 function mfWerkpagina(w, i) {
   const next = works[(i + 1) % works.length];
   const spec = SPECS[w.slug];
-  const facts = [...(spec ? spec.rows.slice(0, 2).map(r => r[1]) : []), w.year, 'Prijs op aanvraag'].filter(Boolean);
+  const facts = [...(spec ? spec.rows.slice(0, 2).map(r => r[1]) : []), 'Prijs op aanvraag'];
   return mfPage(w.title, `
-  <p class="mf-back"><a href="/werk/">Alle werken</a></p>
-  <h1>${esc(w.title)}</h1>
-  ${mfBox('Hoofdbeeld', `${w.cover.w}/${w.cover.h}`)}
-  <p class="mf-facts">${facts.map(esc).join('<br>')}</p>
-  <p class="mf-text">${w.story.length ? 'Het verhaal van het werk, in een paar zinnen.' : 'Korte tekst over het werk (nog aan te leveren door William).'}</p>
-  ${mfBox('Beeld', '3/2')}
-  ${mfBox('Beeld', '4/5')}
-  ${w.makingOf.length ? mfBox('In het atelier', '3/2') : ''}
-  <p class="mf-btn"><a href="/contact/">Informeer naar dit werk</a></p>
-  <p class="mf-next"><a href="${workUrl(next)}">Volgend werk<br><b>${esc(next.title)}</b></a></p>`, 'werk');
+  <section class="mf-wp">
+    <div class="mf-wp-img">${mfBox('Hoofdbeeld', `${w.cover.w}/${w.cover.h}`)}</div>
+    <div class="mf-wp-info">
+      <a class="mf-back" href="/werk/">Alle werken</a>
+      <h1>${esc(w.title)}</h1>
+      <p class="mf-meta">${esc([w.year, w.material && w.material.split(',')[0]].filter(Boolean).join(', ') || 'Uniek werk')}</p>
+      <p class="mf-facts">${facts.map(esc).join('<br>')}</p>
+      <a class="mf-btn" href="/contact/">Interesse in dit werk?</a>
+    </div>
+  </section>
+  <p class="mf-story">${w.story.length ? 'Het verhaal van het werk, in een paar zinnen.' : 'Een paar zinnen over het werk.'}</p>
+  <section class="mf-gal">
+    ${mfBox('Beeld', '16/9', 'g-full')}
+    ${mfBox('Beeld', '4/5', 'g-l')}
+    ${mfBox('Detail', '1/1', 'g-r')}
+    ${mfBox('Beeld', '3/2', 'g-c')}
+  </section>
+  ${w.makingOf.length ? `<section class="mf-strip"><h2>In het atelier</h2><div>${Array.from({ length: Math.min(5, w.makingOf.length + 1) }, () => mfBox('Atelier', '3/4')).join('')}</div></section>` : ''}
+  <a class="mf-next" href="${workUrl(next)}"><span>Volgend werk</span><b>${esc(next.title)}</b>${mfBox('', `${next.cover.w}/${next.cover.h}`)}</a>`, 'werk');
 }
 
+const CAT_LINE = { 'cortenstaal-tuinkunst': 'Warm, roestbruin en onderhoudsvrij. Cortenstaal leeft mee met de seizoenen.', 'abstracte-beelden-tuin': 'Vorm, lijn en licht in plaats van een herkenbare figuur.', 'grote-tuinbeelden': 'Werk dat je van ver ziet en van dichtbij overrompelt.' };
 function mfCategorie(key) {
-  const c = CATS[key], list = works.filter(w => w.categories.includes(key)).slice(0, 3);
+  const c = CATS[key], list = works.filter(w => w.categories.includes(key));
   return mfPage(c.t, `
-  <p class="mf-back"><a href="/werk/">Alle werken</a></p>
-  <h1>${esc(c.t)}</h1>
-  <p class="mf-text">E\u00e9n zin over ${c.short === 'Groot' ? 'grote tuinbeelden' : c.short === 'Abstract' ? 'abstracte tuinbeelden' : 'cortenstaal'}.</p>
-  ${list.map(w => `<a class="mf-work" href="${workUrl(w)}">${mfBox(w.title, `${w.cover.w}/${w.cover.h}`)}<p><b>${esc(w.title)}</b></p></a>`).join('')}
-  <p class="mf-more">En de andere werken uit deze reeks.</p>
-  <p class="mf-text">Uitleg over het materiaal en werk op maat. Deze tekst bestaat al en blijft staan voor Google.</p>
-  <p class="mf-btn"><a href="/contact/">Neem contact op</a></p>`, key);
+  <section class="mf-cat">
+    <div class="mf-cat-t"><a class="mf-back" href="/werk/">Alle werken</a><h1>${esc(c.t)}</h1><p class="mf-lead">${CAT_LINE[key]}</p></div>
+    <div class="mf-cat-img">${mfBox('Sfeerbeeld van een werk in een tuin', '4/5')}</div>
+  </section>
+  <div class="mf-scatter">${list.map((w, i) => mfWork(w, SCAT[(i + 2) % SCAT.length])).join('')}</div>
+  <details class="mf-more"><summary>Lees meer over ${c.short === 'Groot' ? 'grote tuinbeelden' : c.short === 'Abstract' ? 'abstracte tuinbeelden' : 'cortenstaal'}</summary><p>De bestaande tekst van de oude site, voor Google. Klapt open voor wie meer wil lezen.</p></details>
+  <a class="mf-btn" href="/contact/">Neem contact op</a>`, key);
 }
 
 function mfOpdrachten() {
+  const cases = [['Een stad', 'Proud, 9 m hoog, voor Knokke-Heist.', 'proud', '3/4', 'c-1'], ['Een festival', 'Twaalf vuurpilaren voor Tomorrowland.', 'fantasy-flame-pillars', '4/3', 'c-2'], ['Een bedrijf', 'Een monumentaal werk voor Fujirebio.', null, '16/9', 'c-3']];
   return mfPage('Opdrachten', `
-  <h1>Opdrachten</h1>
-  <p class="mf-text">Een beeld dat precies past bij de plek.</p>
-  ${mfBox('Werk in een tuin', '3/2')}
-  <h2>Tuin en bedrijf</h2>
-  <p class="mf-text">Twee zinnen over een werk op maat.</p>
-  ${mfBox('Werk op een event', '3/2')}
-  <h2>Events</h2>
-  <p class="mf-text">Twee zinnen, met Tomorrowland als voorbeeld.</p>
-  <h2>Zo verloopt het</h2>
-  <ol class="mf-steps"><li>Op de plek</li><li>Schets en voorstel</li><li>In het atelier</li><li>Fundering</li><li>Plaatsing</li></ol>
-  <p class="mf-btn"><a href="/contact/">Neem contact op</a></p>`, 'opdrachten');
+  <section class="mf-op-hero">${mfBox('Groot beeld van een werk op zijn plek', '21/9')}<div><h1>Opdrachten</h1><p class="mf-lead">Een beeld dat precies past bij de plek.</p></div></section>
+  <section class="mf-cases">${cases.map(([t, s, slug, r, cls]) => `<${slug ? `a href="${workUrl(by[slug])}"` : 'div'} class="mf-case ${cls}">${mfBox(t, r)}<h2>${t}</h2><p>${s}</p></${slug ? 'a' : 'div'}>`).join('')}</section>
+  <section class="mf-how"><h2>Zo werkt het</h2><div><p><b>Kennismaking</b>Op de plek zelf.</p><p><b>Ontwerp</b>Schets en voorstel.</p><p><b>Plaatsing</b>Gemaakt, geleverd, verankerd.</p></div></section>
+  <a class="mf-btn" href="/contact/">Neem contact op</a>`, 'opdrachten');
 }
 
 function mfOver() {
   return mfPage('Over William', `
-  <h1>William Roobrouck</h1>
-  ${mfBox('Video van William', '16/9')}
-  <p class="mf-text">Een korte tekst over William: van het atelier van zijn grootvader tot vandaag.</p>
-  <ol class="mf-years"><li><b>1977</b> Tienen</li><li><b>2008</b> Laarne</li><li><b>2012</b> Tomorrowland</li><li><b>2019</b> Londen</li><li><b>2024</b> Fujirebio</li></ol>
-  ${mfBox('Foto van William', '4/5')}`, 'over');
+  <section class="mf-ov">${mfBox('Video van William', '16/9')}<h1>William Roobrouck</h1></section>
+  <p class="mf-quote">Van de eerste schets tot het laatste laspunt doet hij alles zelf.</p>
+  <section class="mf-moments">
+    <figure class="m-1">${mfBox('Atelier van zijn grootvader', '4/5')}<figcaption><b>De Panne</b>Waar hij leerde lassen.</figcaption></figure>
+    <figure class="m-2">${mfBox('Atelier in Laarne', '3/2')}<figcaption><b>Laarne</b>Sinds 2008.</figcaption></figure>
+    <figure class="m-3">${mfBox('William vandaag', '1/1')}<figcaption><b>Nu</b>Werk tot negen meter hoog.</figcaption></figure>
+  </section>`, 'over');
 }
 
 function mfAgenda() {
   return mfPage('Agenda', `
-  <h1>Agenda</h1>
-  <h2>2024</h2>
-  <ul class="mf-list"><li>Monumentaal werk, Fujirebio</li><li>Tentoonstelling, Laarne</li><li>Kunstenroute Kwa-art</li></ul>
-  ${mfBox('Foto', '3/2')}
-  <h2>2022</h2>
-  <ul class="mf-list"><li>Bi\u00ebnnale Artbox Expo, Veneti\u00eb</li><li>Tuindagen, Beervelde</li></ul>
-  <p class="mf-more">Eerdere jaren klappen open.</p>`, 'agenda');
+  <h1 class="mf-h1">Agenda</h1>
+  <section class="mf-next-ev">${mfBox('Foto van de plek', '4/3')}<div><p class="mf-label">Binnenkort</p><h2>Naam van de expositie</h2><p>Datum en plaats</p><a class="mf-btn" href="#">Route</a></div></section>
+  <section class="mf-year"><p class="mf-yn">2024</p><p class="mf-ev">Monumentaal werk voor Fujirebio in Zwijnaarde. Tentoonstelling in Laarne. Kunstenroute Kwa-art in Kwaremont.</p>${mfBox('Foto uit 2024', '3/4')}</section>
+  <p class="mf-years-old">Eerder <span>2022</span><span>2021</span><span>2020</span><span>2019</span><span>2018</span><span>2012</span></p>`, 'agenda');
 }
 
 function mfContact() {
   return mfPage('Contact', `
-  <h1>Contact</h1>
-  <p class="mf-big">roobrouck.william@gmail.com<br>0497 53 51 58</p>
-  <p class="mf-text">Veldstraat 9, 9270 Laarne</p>
-  <div class="mf-form"><span>Naam</span><span>E-mail</span><span>Bericht</span></div>
-  <p class="mf-btn"><a>Verstuur</a></p>`, 'contact');
+  <section class="mf-ct">
+    <div><h1>Contact</h1><p class="mf-big">roobrouck.william@gmail.com</p><p class="mf-big">0497 53 51 58</p><p class="mf-meta">Veldstraat 9, 9270 Laarne</p></div>
+    <form class="mf-form"><span>Naam</span><span>E-mail</span><span class="tall">Bericht</span><a class="mf-btn">Verstuur</a></form>
+  </section>
+  ${mfBox('Foto van het atelier', '21/9')}`, 'contact');
 }
 
 /* ---------- Schrijven ---------- */

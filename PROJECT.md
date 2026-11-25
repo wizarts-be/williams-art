@@ -508,3 +508,14 @@ Jasper: de homepage is goed. De andere pagina's waren nog niet aan de orde en zi
 ## 16. Structuurschetsen in de site (25/11/2026)
 
 De eerste MIDFI (losse map, kolommen, veel notities) vond Jasper te chaotisch, en die is verwijderd. Nu bouwt `scripts/build.mjs` voor elke pagina na de homepage een rustige structuurschets op de echte URL: /werk/, /portfolio/<werk>/ (34), de 3 categoriepagina's, /opdrachten/, /over-william/, /agenda/ en /contact/. Elke schets is één smalle kolom met grijze vlakken en weinig tekst, met de echte header en footer, een label "Structuurschets" en noindex. De CSS staat in `assets/css/midfi.css`. De homepage linkt er gewoon naartoe. Links naar pagina's die niet bestaan (privacy, cookies) gaan naar home. De nieuwsbrief-pop-up verschijnt alleen op de homepage.
+
+## 17. Nieuwe structuur andere pagina's (25/11/2026)
+
+Jasper vond de opbouw van de eerste structuurschetsen niet goed. Wat weg moest: lijsten van woorden met lijntjes ertussen. Kolommen mogen wel. Nieuwe opbouw, goedgekeurd en gepusht:
+- **Werk:** de werken verspreid over de pagina.
+- **Werkpagina:** groot beeld met de feiten ernaast, het verhaal, een vrije galerij, een atelierband en "Volgend werk".
+- **Categorie:** titel naast een sfeerbeeld, de werken verspreid, de SEO-tekst ingeklapt.
+- **Opdrachten:** breed beeld, drie voorbeelden (stad, festival, bedrijf), drie stappen.
+- **Over William:** video, één grote zin, drie momenten.
+- **Agenda:** "Binnenkort", het jaar groot met een alinea en een foto, oudere jaren als cijfers.
+- **Contact:** gegevens naast het formulier.
