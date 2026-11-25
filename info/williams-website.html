@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Williams – William Roobrouck</title>
+<meta name="description" content="Beelden, kunstobjecten en design in cortenstaal, staal, licht en vuur van William Roobrouck (Laarne).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500&family=Inter:wght@400;500&family=Outfit:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#000; --mute:#8a8a8a; --line:#e6e6e6; --soft:#f7f7f7; --bg:#fff;
+    --body:"Inter",system-ui,sans-serif;
+    --display:"Barlow Condensed","Arial Narrow",sans-serif;
+    --mark:"Outfit","Inter",sans-serif;
+    --gut:30px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/21px var(--body);letter-spacing:.12px;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;letter-spacing:inherit}
+  img{display:block;width:100%;height:auto}
+  .muted{color:var(--mute)}
+
+  /* ---------- Header ---------- */
+  header.hd{position:fixed;inset:0 0 auto 0;height:80px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:0 var(--gut);background:var(--bg)}
+  .hd-left{display:flex;align-items:center;gap:22px}
+  .burger{width:20px;height:14px;position:relative}
+  .burger i{position:absolute;left:0;right:0;height:1.4px;background:var(--ink);transition:transform .25s,opacity .2s}
+  .burger i:nth-child(1){top:0}.burger i:nth-child(2){top:6px}.burger i:nth-child(3){top:12px}
+  .menu-open .burger i:nth-child(1){transform:translateY(6px) rotate(45deg)}
+  .menu-open .burger i:nth-child(2){opacity:0}
+  .menu-open .burger i:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+  nav.main{display:none;gap:22px;align-items:center}
+  .menu-open nav.main{display:flex}
+  nav.main a,nav.main button{font-size:14px}
+  nav.main .on{font-weight:500}
+  nav.main a:hover,nav.main button:hover{color:var(--mute)}
+  .hd-right{display:flex;align-items:center;gap:14px;font-size:14px}
+  .mark-sm{font:500 26px/1 var(--mark);letter-spacing:-.04em;opacity:0;transition:opacity .3s}
+  .show-mark .mark-sm,.not-home .mark-sm{opacity:1}
+  .lang{position:relative}
+  .lang > button::before{content:"";display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--ink);margin:0 8px 2px 0;vertical-align:middle}
+  .lang ul{display:none;position:absolute;right:0;top:28px;list-style:none;margin:0;padding:10px 0;background:var(--bg);min-width:120px;text-align:right}
+  .lang.open ul{display:block}
+  .lang li a{display:block;padding:3px 0}
+  .lang li a:hover{color:var(--mute)}
+
+  /* Submenu overlay (like the Artists overlay) */
+  .sub{position:fixed;inset:80px 0 0 0;background:var(--bg);z-index:40;display:none;padding:12px var(--gut) 0 calc(var(--gut) + 42px)}
+  .sub.open{display:block}
+  .sub a{display:block;padding:9px 0;font-size:15px}
+  .sub a:hover{color:var(--mute)}
+
+  main{padding-top:80px;min-height:70vh}
+  .view{animation:fade .5s ease both}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+
+  /* ---------- Home ---------- */
+  .home-mark{padding:70px 0 110px 19.5%}
+  .home-mark h1{margin:0;font:500 clamp(64px,8.6vw,132px)/.9 var(--mark);letter-spacing:-.055em}
+  .strip{height:min(828px,100vh);position:relative;display:flex;flex-direction:column;justify-content:center}
+  .strip + .strip{border-top:0}
+  .rail{overflow:hidden;height:688px;max-height:calc(100vh - 120px);padding-top:13px}
+  .track{display:flex;width:max-content;height:100%;animation:slide var(--dur,90s) linear infinite}
+  .rail:hover .track{animation-play-state:paused}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  .slide{width:378px;padding:0 15px;height:100%;display:flex}
+  .slide.top{align-items:flex-start}.slide.mid{align-items:center}.slide.bot{align-items:flex-end}
+  .tile{position:relative;display:block;width:100%;overflow:hidden;background:var(--soft)}
+  .tile img{height:100%;object-fit:cover}
+  .slide > div > .tile{height:100%}
+  .tile .ov{position:absolute;inset:0;background:rgba(0,0,0,.3);opacity:0;transition:opacity .3s}
+  .tile .lb{position:absolute;right:12px;bottom:10px;color:#fff;font-size:14px;opacity:0;transition:opacity .3s;text-align:right}
+  .tile:hover .ov,.tile:hover .lb{opacity:1}
+  .chev{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);width:30px;height:30px;display:flex;align-items:center;justify-content:center}
+  .chev svg{width:14px;height:14px}
+
+  /* ---------- Shared page head ---------- */
+  .pg{padding:0 var(--gut)}
+  .back{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:500;margin:22px 0 8px}
+  .back:hover{color:var(--mute)}
+  .back svg{width:7px;height:10px}
+  .ttl{font:400 40px/40px var(--display);text-transform:uppercase;margin:6px 0 30px;letter-spacing:0}
+  .ttl.xl{font-size:clamp(56px,6.2vw,96px);line-height:.95;margin:4px 0 40px}
+  .ttl-row{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+  .viewsw{display:flex;gap:12px;font-size:14px;padding-bottom:34px}
+  .viewsw button{color:var(--mute)}
+  .viewsw button.on{color:var(--ink);font-weight:500}
+
+  /* List view (like the Photographers list) */
+  .listwrap{position:relative;min-height:62vh}
+  .names{columns:2;column-gap:30px;width:min(760px,52%);margin:0 0 80px;padding:0;list-style:none}
+  .names li{break-inside:avoid}
+  .names a{display:inline-block;padding:3px 0 23px;font-size:15px}
+  .names a:hover,.names a.hl{font-weight:500}
+  .names .tag{font-size:11px;color:var(--mute);margin-left:6px}
+  .preview{position:absolute;right:0;top:20px;width:45%;display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:start;pointer-events:none}
+  .preview img{opacity:0;transition:opacity .25s}
+  .preview.on img{opacity:1}
+  .preview img:nth-child(2){margin-top:40px}
+
+  /* Scattered grid (artist page / image view) */
+  .scatter{display:grid;grid-template-columns:repeat(4,1fr);column-gap:30px;row-gap:40px;margin-bottom:80px}
+  .scatter .tile{aspect-ratio:var(--ar,4/5)}
+  .scatter .first{grid-column:2 / span 2}
+
+  /* Work info block (like the profile/contact block) */
+  .info{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;padding:50px 0 60px;border-top:1px solid var(--line)}
+  .info h3{font-size:15px;font-weight:500;margin:0 0 10px}
+  .info p{margin:0 0 12px}
+  .info .span2{grid-column:span 2}
+  .specs{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 18px}
+  .specs dt{color:var(--mute)}.specs dd{margin:0}
+  .inq{display:flex;border-bottom:1px solid var(--ink);margin-top:14px;max-width:340px}
+  .inq input{flex:1;border:0;padding:8px 0;font:inherit;outline:0;background:none}
+  .inq button{font-weight:500}
+  .pager{display:flex;justify-content:space-between;padding:20px 0 50px;font-size:14px}
+  .pager a:hover{color:var(--mute)}
+
+  /* Text pages */
+  .cols{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-bottom:70px}
+  .cols h2{font:400 26px/1.1 var(--display);text-transform:uppercase;margin:0 0 14px}
+  .cols h3{font-size:15px;font-weight:500;margin:0 0 6px}
+  .cols p{margin:0 0 14px}
+  .s1{grid-column:span 1}.s2{grid-column:span 2}.s3{grid-column:span 3}.s4{grid-column:1 / -1}
+  .c2{grid-column:2 / span 2}.c3{grid-column:3 / span 2}
+  .lead{font-size:22px;line-height:1.35;letter-spacing:-.01em;margin:0 0 20px}
+  .rule{border-top:1px solid var(--line);padding-top:24px}
+  .steps{list-style:none;margin:0;padding:0;counter-reset:s}
+  .steps li{counter-increment:s;padding:14px 0;border-top:1px solid var(--line)}
+  .steps li::before{content:"0" counter(s);color:var(--mute);margin-right:18px;font-size:13px}
+  .arrow{font-weight:500;display:inline-block;margin-top:6px}
+  .arrow:hover{color:var(--mute)}
+
+  /* Agenda */
+  .year{display:grid;grid-template-columns:1fr 3fr;gap:30px;border-top:1px solid var(--line);padding:22px 0 34px}
+  .year h2{font:400 40px/1 var(--display);margin:0}
+  .ev{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;padding:8px 0}
+  .ev .d{color:var(--mute)}
+
+  /* Contact */
+  form.cf{display:grid;gap:18px;max-width:560px}
+  .cf label{display:grid;gap:4px;font-size:13px;color:var(--mute)}
+  .cf input,.cf select,.cf textarea{font:inherit;color:var(--ink);border:0;border-bottom:1px solid var(--ink);padding:8px 0;background:none;outline:0;border-radius:0}
+  .cf textarea{min-height:110px;resize:vertical}
+  .cf .chk{display:flex;gap:10px;align-items:flex-start;color:var(--ink)}
+  .cf .chk input{width:auto;margin-top:4px}
+  .cf button{justify-self:start;font-weight:500;border-bottom:1px solid var(--ink);padding-bottom:2px}
+  .ok{display:none;font-weight:500}
+  .sent .ok{display:block}.sent .cf{display:none}
+
+  .totop{display:block;text-align:center;font-size:14px;padding:30px 0}
+  .totop:hover{color:var(--mute)}
+
+  /* ---------- Footer ---------- */
+  footer.ft{background:var(--soft);padding:32px var(--gut);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+  .ft-left{display:flex;align-items:center;gap:34px;flex-wrap:wrap}
+  .ft .mk{font:500 30px/1 var(--mark);letter-spacing:-.05em}
+  .nl{display:flex;align-items:center;background:var(--bg);width:330px;max-width:100%}
+  .nl input{flex:1;border:0;padding:12px 14px;font:inherit;outline:0;min-width:0}
+  .nl button{padding:12px 14px;color:var(--mute)}
+  .nl button:hover{color:var(--ink)}
+  .ft-links{display:flex;gap:28px;font-size:14px;flex-wrap:wrap}
+  .ft-links a:hover{color:var(--mute)}
+
+  /* ---------- Mobile ---------- */
+  @media (max-width:820px){
+    :root{--gut:16px}
+    header.hd{height:64px}
+    main{padding-top:64px}
+    .sub{inset:64px 0 0 0;padding-left:var(--gut)}
+    .menu-open nav.main{display:flex;position:fixed;inset:64px 0 0 0;background:var(--bg);flex-direction:column;align-items:flex-start;padding:16px var(--gut);gap:14px}
+    .menu-open nav.main a,.menu-open nav.main button{font-size:24px;line-height:1.2}
+    .home-mark{padding:40px var(--gut) 50px}
+    .strip{height:auto;padding:20px 0 60px}
+    .rail{height:440px}
+    .slide{width:260px;padding:0 10px}
+    .ttl-row{flex-direction:column;align-items:flex-start}
+    .viewsw{padding-bottom:20px}
+    .names{columns:1;width:100%}
+    .names a{padding-bottom:12px}
+    .preview{display:none}
+    .scatter{grid-template-columns:1fr 1fr;column-gap:12px;row-gap:12px}
+    .scatter > *{grid-column:auto !important}
+    .scatter .first{grid-column:1 / -1 !important}
+    .info,.cols{grid-template-columns:1fr}
+    .info > *,.cols > *{grid-column:auto !important}
+    .year{grid-template-columns:1fr;gap:10px}
+    .ev{grid-template-columns:1fr;gap:0;padding:10px 0}
+    footer.ft{flex-direction:column;align-items:flex-start}
+  }
+  @media (prefers-reduced-motion:reduce){.track{animation:none}.view{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="hd" id="hd">
+  <div class="hd-left">
+    <button class="burger" id="burger" aria-label="Menu"><i></i><i></i><i></i></button>
+    <nav class="main" id="nav">
+      <button id="nav-werk" data-nav="werk">Werk</button>
+      <a href="#/agenda" data-nav="agenda">Agenda</a>
+      <a href="#/over" data-nav="over">Over William</a>
+      <a href="#/opdrachten" data-nav="opdrachten">Opdrachten</a>
+      <a href="#/contact" data-nav="contact">Contact</a>
+      <a href="https://www.instagram.com/williams.art.design/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </div>
+  <div class="hd-right">
+    <a href="#/" class="mark-sm" aria-label="Williams home">williams</a>
+    <div class="lang" id="lang">
+      <button id="lang-btn">Nederlands</button>
+      <ul>
+        <li><a href="#" data-lang>Nederlands</a></li>
+        <li><a href="#" data-lang>Français</a></li>
+        <li><a href="#" data-lang>English</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<div class="sub" id="sub">
+  <a href="#/werk">Alle werken</a>
+  <a href="#/categorie/cortenstaal">Cortenstalen beelden</a>
+  <a href="#/categorie/abstract">Abstracte tuinbeelden</a>
+  <a href="#/categorie/groot">Grote tuinbeelden</a>
+</div>
+
+<main id="app"></main>
+
+<footer class="ft">
+  <div class="ft-left">
+    <a href="#/" class="mk">williams</a>
+    <form class="nl" onsubmit="this.querySelector('input').value='';this.querySelector('button').textContent='Bedankt';return false">
+      <input type="email" placeholder="Nieuwsbrief: nieuwe werken en exposities" aria-label="E-mailadres" required>
+      <button>Inschrijven</button>
+    </form>
+  </div>
+  <div class="ft-links">
+    <a href="https://www.instagram.com/williams.art.design/" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://www.facebook.com/WilliamsArtDesign/" target="_blank" rel="noopener">Facebook</a>
+    <a href="#/contact">Privacy policy</a>
+    <a href="#/contact">Cookie policy</a>
+    <a href="https://wizarts.be" target="_blank" rel="noopener">Website door Wizarts</a>
+  </div>
+</footer>
+
+<script>
+const U = 'https://williams-art-design.com/wp-content/uploads/';
+
+/* ---------- Content (from williams-art-design.com) ---------- */
+const WORKS = [
+  {s:'over-the-edge', t:'Over the edge', img:'2024/09/Over-the-edge-scaled.jpg',
+    d:'Een schilderij in staal met een verzonken opening in het midden. Verkrijgbaar in een vierkant en een rechthoekig formaat.',
+    spec:{Materiaal:'Staal',Formaat:'Vierkant of rechthoekig'},
+    g:['2024/09/IMG_8070-1200x900.jpg','2024/11/over_the_edge_03-1084x1200.jpg','2024/09/IMG_8067-1200x900.jpg','2024/11/over_the_edge_06-987x1200.jpg','2024/11/over_the_edge_02-1200x856.jpg','2024/11/over_the_edge_05-1200x900.jpg','2024/09/IMG_8068-1084x1200.jpg','2024/11/over_the_edge_11-1200x1200.jpg','2024/11/over_the_edge_08-1200x900.jpg','2024/11/over_the_edge_09-1200x900.jpg']},
+  {s:'coloured-marbles', t:'Coloured marbles', img:'2024/09/Coloured-marbles-scaled.jpeg'},
+  {s:'endless-sphere', t:'Endless sphere', n:true, img:'2024/12/endless_sphere_08-scaled.jpg',
+    d:'Een nieuwe bol uit de reeks spheres: een doorlopende vorm zonder begin of einde.',
+    g:['2024/12/endless_sphere_01-1200x900.jpg','2024/12/endless_sphere_11-900x1200.jpg','2024/12/endless_sphere_02-1200x900.jpg','2024/12/endless_sphere_04-1200x900.jpg','2024/12/endless_sphere_13-900x1200.jpg','2024/12/endless_sphere_05-1200x900.jpg','2024/12/endless_sphere_06-1200x900.jpg','2024/12/endless_sphere_08-1200x900.jpg','2024/12/endless_sphere_10-1200x900.jpg','2024/12/endless_sphere_12-1200x900.jpg']},
+  {s:'desire-accompli', t:'Desire accompli', img:'2024/12/desire-accompli_04.jpeg'},
+  {s:'i-c', t:'I – C', n:true, img:'2024/12/I-C_06-scaled.jpg',
+    d:'Nieuw werk van William Roobrouck.',
+    g:['2024/12/I-C_01-1200x900.jpg','2024/12/I-C_05-900x1200.jpg','2024/12/I-C_02-1200x900.jpg','2024/12/I-C_03-1200x900.jpg','2024/12/I-C_04-1200x900.jpg','2024/12/I-C_06-1200x900.jpg','2024/12/I-C_07-1200x900.jpg','2024/12/I-C_08-1200x900.jpg']},
+  {s:'subtige-men', t:'Subtige men', img:'2024/12/mystique_men_20-scaled.jpg'},
+  {s:'subtige-sphere', t:'Subtige sphere', img:'2024/12/subtige_sphere_02-scaled.jpg'},
+  {s:'the-sun', t:'The sun', img:'2025/01/The-sun-scaled.jpg'},
+  {s:'deep-in-the-blue', t:'Deep in the blue', img:'2025/01/Deep-in-the-blue.jpeg'},
+  {s:'omhelzing', t:'Omhelzing', img:'2024/11/omhelzing_05-scaled.jpg',
+    d:'Twee figuren die elkaar omarmen: een beeld over verbondenheid en nabijheid. Verkrijgbaar in een hoogte van 2 meter of 4 meter.',
+    spec:{Hoogte:'2 m of 4 m'},
+    g:['2024/11/omhelzing_05-900x1200.jpg','2024/11/omhelzing_04-1200x900.jpg','2024/09/Omhelzing-rood-2-900x1200.jpeg','2024/11/omhelzing_06-1200x900.jpg','2024/09/Omhelzing-rood-900x1200.jpeg','2024/11/omhelzing_03-1200x900.jpg','2024/09/Omhelzing-900x1200.jpg','2024/11/omhelzing_07-900x1200.jpg','2024/11/omhelzing_08-900x1200.jpg','2024/11/Omhelzing_4090-900x1200.jpg','2024/11/Omhelzing_4106-900x1200.jpg','2024/11/omhelzing_09-900x1200.jpg']},
+  {s:'hangjongeren', t:'Hangjongeren', img:'2024/11/Hangjongeren-2-scaled.jpg'},
+  {s:'twister', t:'Twister', img:'2024/09/P1070470-scaled.jpg'},
+  {s:'welding-sphere', t:'Welding sphere', img:'2024/11/welding_sphere_08-scaled.jpg'},
+  {s:'ring-of-hope', t:'Ring of hope', img:'2024/09/The-Ring-of-Hope-scaled.jpg',
+    d:'Een ring in cortenstaal, in drie diameters. Van elke maat bestaan acht genummerde exemplaren. Een versie van 8 meter is in voorbereiding.',
+    spec:{Materiaal:'Cortenstaal',Diameter:'2 m, 3 m of 4 m',Oplage:'8 genummerde exemplaren per maat'},
+    g:['2024/09/The-Ring-of-Hope-1200x800.jpg','2024/11/Ring-of-hope_4092-900x1200.jpg','2024/09/IMG_7528-1200x1105.jpeg','2024/09/IMG_4101-1200x900.jpeg','2024/11/ring_of_hope_04-1176x1200.jpg','2024/09/IMG_4129-1200x900.jpeg','2024/11/ring_of_hope_07-1200x848.jpg','2024/11/Ring-of-hope_3918-1200x900.jpg','2024/11/Ring-of-hope_3915-1200x900.jpg']},
+  {s:'yoni', t:'Yoni', img:'2024/09/IMG_5728-scaled.jpg'},
+  {s:'luc-de-vos', t:'Luc De Vos', img:'2024/09/Ode-Luc-De-Vos-scaled.jpeg'},
+  {s:'abscence', t:'Abscence', img:'2024/11/abscence_09-scaled.jpg'},
+  {s:'koesteren', t:'Koesteren', img:'2024/11/IMG_8710-scaled.jpeg'},
+  {s:'equilibre', t:'Equilibre', img:'2024/09/Equilibre-6-scaled.jpeg'},
+  {s:'mystique-men', t:'Mystique men', img:'2024/09/Mystique-Men-1-scaled.jpeg'},
+  {s:'layered-sphere', t:'Layered sphere', img:'2024/09/Layered-Sphere-2-scaled.jpg'},
+  {s:'buddha', t:'Buddha', img:'2024/09/Buddha-2-scaled.jpg'},
+  {s:'modele-female', t:'Modèle female', img:'2024/09/IMG_5401-scaled.jpeg'},
+  {s:'female-wave', t:'Female wave', img:'2024/11/Wave-8-scaled.jpg'},
+  {s:'boeddha', t:'Boeddha', img:'2024/09/IMG_3045.jpg'},
+  {s:'showerlady', t:'Showerlady', img:'2024/09/IMG_9844-e1623050504256-Copy.jpg'},
+  {s:'illusion-pente', t:'Illusion pente', img:'2024/11/illusion_pente_08-scaled.jpg'},
+  {s:'me-myself-and-i', t:'Me, myself and I', img:'2024/09/Me-Myself-and-I-scaled.jpg'},
+  {s:'mystique-sphere', t:'Mystique sphere', img:'2024/10/mystique_sphere_12-scaled.jpg'},
+  {s:'division', t:'Division', img:'2024/09/division_01-scaled.jpg'},
+  {s:'desire-perceptible', t:'Desire perceptible', img:'2024/09/will-0382.jpg'},
+  {s:'through-your-eyes', t:'Through your eyes', img:'2024/09/Through-Your-Eyes-scaled.jpg',
+    d:'Gemaakt voor de RHS Hampton Court Palace Garden Festival in 2019, waar het werk veel media-aandacht kreeg en een zilveren medaille won. Vandaag staat het in RHS Garden Wisley, Londen.',
+    spec:{Afmetingen:'310 × 210 × 260 cm',Jaar:'2019',Locatie:'RHS Garden Wisley, Londen'},
+    g:['2024/09/through_your_eyes_11-900x1200.jpg','2024/09/through_your_eyes_14-1200x800.jpg','2024/09/IMG_7435-1024x1024.jpg','2024/09/through_your_eyes_15-1200x800.jpg','2024/09/92f8fab9-841f-429c-9754-b28ecb46feb1-768x1024-1.jpg','2024/09/IMG_3552-1024x768-1.jpg']},
+  {s:'tomorrowland-flame-pillar', t:'Tomorrowland fantasy flame pillar', img:'2024/09/IMG_0003.jpg',
+    d:'In 2012 vroeg Tomorrowland twaalf decorpilaren rond het thema vuur. Ze zijn zo gebouwd dat het festival ze elk jaar opnieuw kan gebruiken.',
+    spec:{Opdrachtgever:'Tomorrowland, Boom',Jaar:'2012',Aantal:'12 pilaren',Hoogte:'± 4 m, 80 cm breed',Voet:'Gegoten beton, 250 kg',Boog:'± 200 kg'},
+    g:['2024/09/IMG_0002.jpg','2024/09/IMG_0004.jpg','2024/09/IMG_0001.jpg','2024/09/IMG_0003.jpg']},
+  {s:'proud', t:'Proud', img:'2024/09/Proud-4-scaled.jpg'},
+];
+const BY = Object.fromEntries(WORKS.map(w=>[w.s,w]));
+
+const CATS = {
+  cortenstaal:{t:'Cortenstalen beelden', works:['ring-of-hope','endless-sphere','layered-sphere','welding-sphere','twister','over-the-edge','omhelzing','through-your-eyes'],
+    lead:'Cortenstaal is een geliefd materiaal voor kunst in de buitenlucht. De warme, roestbruine kleur past in elke tuin en verandert mee met licht en seizoen.',
+    blocks:[
+      ['Wat is cortenstaal?','Cortenstaal, ook weervast staal genoemd, vormt aan de buitenkant een beschermende roestlaag: de patina. Die laag stopt verdere corrosie, waardoor het staal zichzelf beschermt.'],
+      ['Ideaal voor tuinbeelden','Het materiaal is duurzaam en weerbestendig. Een beeld in cortenstaal heeft geen verf of onderhoud nodig, blijft het hele jaar buiten staan en wordt met de jaren alleen mooier.'],
+      ['Werk op maat','William ontwerpt ook een beeld speciaal voor jouw tuin of bedrijf. Hij adviseert over verhoudingen, verlichting en plaatsing, van eerste idee tot installatie.']
+    ],
+    steps:['Ontwerp en snijden: zware staalplaten worden op maat gesneden.','Rollen en buigen: de platen krijgen vorm en beweging.','Lassen: alle delen worden samengebracht tot één beeld.','Roestproces: het beeld verlaat het atelier donkergrijs en kleurt buiten roestbruin.']},
+  abstract:{t:'Abstracte tuinbeelden', works:['equilibre','illusion-pente','division','twister','coloured-marbles','deep-in-the-blue','layered-sphere','mystique-sphere'],
+    lead:'Abstracte beelden geven een tuin een eigen ritme. Lijn, volume en licht nemen de plaats in van een herkenbare figuur.',
+    blocks:[
+      ['Vorm en beweging','De abstracte werken van William vertrekken van geometrische vormen en zware platen die hij omzet in beweging.'],
+      ['In elke tuin','Of het nu om een strakke stadstuin gaat of een landschapstuin: een abstract beeld werkt als rustpunt of als blikvanger.'],
+      ['Uniek en genummerd','Elk object is genummerd en wordt geleverd met een certificaat van echtheid.']
+    ]},
+  groot:{t:'Grote tuinbeelden', works:['through-your-eyes','omhelzing','ring-of-hope','proud','hangjongeren','tomorrowland-flame-pillar','mystique-men','me-myself-and-i'],
+    lead:'Grote tuinbeelden vragen ruimte, en geven er ook iets voor terug: een middelpunt dat je van ver ziet.',
+    blocks:[
+      ['Monumentaal werk','William specialiseert zich in werk op grote schaal, van beelden van meer dan drie meter tot monumentale opdrachten voor bedrijven, zoals bij Fujirebio in Zwijnaarde.'],
+      ['Plaatsing','Voor grote beelden denkt hij mee over fundering, sokkel, verlichting en transport.'],
+      ['Op maat','Elk groot beeld kan op maat gemaakt worden voor de plek waar het komt te staan.']
+    ]},
+};
+
+const AGENDA = [
+  {y:'2024', ev:[['Wintertentoonstelling','Winterbar',''],['Tentoonstelling','Laarne','14/12 – 22/12'],['Expositie en kunstenroute Kwa-art','Kwaremont',''],['Nieuw monumentaal werk','Fujirebio, Technologiepark Zwijnaarde','']]},
+  {y:'2022', ev:[['Biennale Artbox Expo','Venetië, Italië','8/03 – 30/07'],['Tuindagen','Kasteel en park van Beervelde','6 – 8/05 en oktober'],['Tuinexpo','Cultuurcentrum Scharpoord, Knokke-Heist','26 – 29/05, 4 – 6/06'],['Tentoonstelling De zomer van Wechel','Kasteel Wechelderzande, Lille','weekends 13 – 28/08']]},
+  {y:'2021', ev:[['Artbox Expo','Zürich, Zwitserland',''],['Kunst in het dorp','Gemeenschapscentrum Ter Loo, Bellingen',''],['Zomertentoonstelling','De Maalderij, Zaffelare',''],['Kunstroute Lak@rt','Laarne','']]},
+  {y:'2020', ev:[['Zomertentoonstelling','De Maalderij, Zaffelare',''],['Art Knokke-Heist','Knokke','']]},
+  {y:'2019', ev:[['Through your eyes, zilveren medaille','RHS Hampton Court Palace, Londen',''],['Kunstcentrum Horus','Latem',''],['Out of sight','Cultuurcentrum Scharpoord, Knokke-Heist',''],['Beeldentuin Ravesteyn','Heenvliet, Rotterdam',''],['Beeldenroute','Lo-Reninge',''],['Expositie Janot','Beersel',''],['Lak@rt','Garmijnzaal, Brugge',''],['Kunstroute Lak@rt','Laarne','']]},
+];
+
+/* Home strips: work slugs or extra images with captions */
+const EXTRA = {
+  winterbar:{img:'2025/01/will1.jpg',t:'Wintertentoonstelling, Winterbar',href:'#/agenda'},
+  laarne:{img:'2025/01/will2.jpg',t:'Tentoonstelling, Laarne',href:'#/agenda'},
+  kwaart:{img:'2025/01/will4.jpg',t:'Kunstenroute Kwa-art, Kwaremont',href:'#/agenda'},
+  fujirebio:{img:'2025/01/will5.jpg',t:'Monumentaal werk, Fujirebio Zwijnaarde',href:'#/opdrachten'},
+};
+const STRIPS = [
+  ['ring-of-hope','endless-sphere','omhelzing','fujirebio','the-sun','i-c','through-your-eyes','coloured-marbles','equilibre'],
+  ['over-the-edge','winterbar','layered-sphere','desire-accompli','mystique-men','tomorrowland-flame-pillar','female-wave','deep-in-the-blue','koesteren'],
+  ['proud','welding-sphere','kwaart','hangjongeren','illusion-pente','subtige-sphere','luc-de-vos','twister','abscence'],
+  ['me-myself-and-i','division','laarne','buddha','mystique-sphere','subtige-men','yoni','showerlady','desire-perceptible'],
+];
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const src = p => U + p;
+const chevL = '<svg viewBox="0 0 7 10" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M6 1 2 5l4 4"/></svg>';
+const gal = w => w.g ? w.g : [w.img];
+const arOf = p => { const m = p.match(/-(\d{3,4})x(\d{3,4})/); return m ? `${m[1]}/${m[2]}` : '4/5'; };
+function tile(href, img, label, cls='', ar){
+  return `<a class="tile ${cls}" href="${href}" ${ar?`style="--ar:${ar}"`:''}>
+    <img src="${src(img)}" alt="${esc(label)}" loading="lazy">
+    <span class="ov"></span><span class="lb">${esc(label)}</span></a>`;
+}
+function back(href, text){ return `<a class="back" href="${href}">${chevL}<span>${text}</span></a>`; }
+
+/* ---------- Views ---------- */
+function vHome(){
+  const aligns=['top','mid','bot','mid','top','bot'];
+  const heights=['78%','63%','70%','88%','60%','74%'];
+  let html = `<section class="home-mark"><h1>williams</h1></section>`;
+  STRIPS.forEach((row,ri)=>{
+    const slides = row.map((k,i)=>{
+      const w = BY[k], e = EXTRA[k];
+      const href = w ? `#/werk/${w.s}` : e.href, img = w ? w.img : e.img, t = w ? w.t : e.t;
+      const a = aligns[(i+ri)%aligns.length], h = heights[(i*2+ri)%heights.length];
+      return `<div class="slide ${a}"><div style="width:100%;height:${h}">${tile(href,img,t,'','')}</div></div>`;
+    }).join('');
+    html += `<section class="strip" id="s${ri}"><div class="rail"><div class="track" style="--dur:${80+ri*14}s">${slides}${slides}</div></div>
+      ${ri<STRIPS.length-1?`<a class="chev" href="#s${ri+1}" data-scroll="s${ri+1}" aria-label="Volgende"><svg viewBox="0 0 14 8" fill="none" stroke="currentColor" stroke-width="1.3"><path d="m1 1 6 6 6-6"/></svg></a>`:''}</section>`;
+  });
+  return html;
+}
+
+function vWorkList(mode){
+  const list = WORKS.map(w=>`<li><a href="#/werk/${w.s}" data-pv="${w.s}">${esc(w.t)}${w.n?'<span class="tag">nieuw</span>':''}</a></li>`).join('');
+  const grid = WORKS.map((w,i)=>tile(`#/werk/${w.s}`, w.img, w.t, '', '4/5')).join('');
+  return `<div class="pg">${back('#/','Terug')}
+    <div class="ttl-row"><h1 class="ttl">Werk</h1>
+      <div class="viewsw"><button data-mode="list" class="${mode!=='beeld'?'on':''}">Lijst</button><button data-mode="beeld" class="${mode==='beeld'?'on':''}">Beeld</button></div></div>
+    ${mode==='beeld'
+      ? `<div class="scatter" style="grid-template-columns:repeat(4,1fr)">${grid}</div>`
+      : `<div class="listwrap"><ul class="names">${list}</ul><div class="preview" id="pv"><img alt=""><img alt=""></div></div>`}
+  </div>`;
+}
+
+const COLS = [2,3,4,1,4,1,3,2,3,1,4,2];
+function scatter(items, firstWide=true){
+  return `<div class="scatter">${items.map((it,i)=>{
+    const col = i===0 && firstWide ? null : COLS[i % COLS.length];
+    return `<div ${col?`style="grid-column:${col}"`:''} class="${i===0&&firstWide?'first':''}">${it}</div>`;
+  }).join('')}</div>`;
+}
+
+function vWork(slug){
+  const w = BY[slug]; if(!w) return vWorkList();
+  const i = WORKS.indexOf(w), prev = WORKS[(i-1+WORKS.length)%WORKS.length], next = WORKS[(i+1)%WORKS.length];
+  const imgs = gal(w).map((p,k)=>tile('#', p, `${w.t} — ${String(k+1).padStart(2,'0')}`, 'zoom', arOf(p)));
+  const spec = w.spec ? `<dl class="specs">${Object.entries(w.spec).map(([k,v])=>`<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : `<p class="muted">Afmetingen, materiaal en prijs op aanvraag.</p>`;
+  return `<div class="pg">${back('#/werk','Terug naar werk')}
+    <h1 class="ttl xl">${esc(w.t)}</h1>
+    ${scatter(imgs)}
+    <section class="info">
+      <div class="span2"><h3>Over dit werk</h3><p>${esc(w.d || 'Een uniek werk van William Roobrouck, van eerste schets tot laatste laspunt met de hand gemaakt in zijn atelier in Laarne.')}</p>
+        <p class="muted">Elk object is genummerd en wordt geleverd met een certificaat van echtheid.</p></div>
+      <div><h3>Gegevens</h3>${spec}</div>
+      <div><h3>Informeer naar dit werk</h3>
+        <p>Laat je e-mailadres achter, dan neemt William contact op.</p>
+        <form class="inq" onsubmit="this.innerHTML='<span style=&quot;padding:8px 0&quot;>Bedankt, we nemen contact op.</span>';return false">
+          <input type="email" placeholder="E-mail" required aria-label="E-mail"><button>Verzenden</button></form>
+        <p style="margin-top:18px"><a class="arrow" href="#/contact">Contact →</a></p></div>
+    </section>
+    <nav class="pager"><a href="#/werk/${prev.s}">← ${esc(prev.t)}</a><a href="#top" data-top>Terug naar boven</a><a href="#/werk/${next.s}">${esc(next.t)} →</a></nav>
+  </div>`;
+}
+
+function vCat(key){
+  const c = CATS[key]; if(!c) return vWorkList();
+  const imgs = c.works.map(s=>BY[s]).map(w=>tile(`#/werk/${w.s}`, w.img, w.t, '', '4/5'));
+  return `<div class="pg">${back('#/werk','Terug naar werk')}
+    <h1 class="ttl xl">${c.t}</h1>
+    <div class="cols"><p class="lead c2" style="grid-column:2 / span 2">${c.lead}</p></div>
+    ${scatter(imgs)}
+    <div class="cols rule">
+      ${c.blocks.map(b=>`<div><h3>${b[0]}</h3><p>${b[1]}</p></div>`).join('')}
+      <div><h3>Meer werk</h3><p><a class="arrow" href="#/werk">Alle werken →</a><br><a class="arrow" href="#/opdrachten">Een beeld op maat →</a></p></div>
+    </div>
+    ${c.steps?`<div class="cols"><div><h2>Zo ontstaat een beeld</h2></div><ol class="steps s3">${c.steps.map(s=>`<li>${s}</li>`).join('')}</ol></div>`:''}
+  </div>`;
+}
+
+function vAgenda(){
+  return `<div class="pg">${back('#/','Terug')}<h1 class="ttl">Agenda</h1>
+    ${AGENDA.map(y=>`<section class="year"><h2>${y.y}</h2><div>${y.ev.map(e=>`<div class="ev"><span>${esc(e[0])}</span><span class="muted">${esc(e[1])}</span><span class="d">${esc(e[2])}</span></div>`).join('')}</div></section>`).join('')}
+    <div style="height:60px"></div></div>`;
+}
+
+function vOver(){
+  return `<div class="pg">${back('#/','Terug')}<h1 class="ttl xl">William Roobrouck</h1>
+    <div class="cols">
+      <p class="lead s2">Onder de naam Williams maakt William Roobrouck beelden, kunstobjecten en designstukken met een liefde voor vorm, ruwe materialen en vakmanschap.</p>
+      <div class="s2"><video src="${src('2024/09/01-William-300524.mp4')}" controls playsinline preload="metadata" style="width:100%;display:block;background:#f7f7f7"></video></div>
+    </div>
+    <div class="cols rule">
+      <div><h3>Het verhaal</h3><p>William werd geboren in Tienen in 1977 en groeide op tussen Gent en De Panne. Sinds 2008 woont en werkt hij in Laarne.</p></div>
+      <div><h3>Kunst in de familie</h3><p>Zijn moeder studeerde kunstgeschiedenis en schilderde aquarellen, zijn grootmoeder maakte olieverfschilderijen. Bij zijn grootvader aan zee leerde hij boren, lassen en zagen.</p></div>
+      <div><h3>Het werk</h3><p>Hij haalt inspiratie uit mens en natuur, vaak vertaald naar gezichten. Hij combineert staal en vuur, of werkt met licht.</p></div>
+      <div><h3>Alles zelf</h3><p>Van de eerste schets tot het laatste laspunt doet William alles zelf. Materialen worden zorgvuldig gekozen en bewerkt.</p></div>
+    </div>
+    ${scatter([tile('#/opdrachten','2025/01/will5.jpg','Monumentaal werk, Fujirebio','', '4/5'), tile('#/werk/through-your-eyes','2024/09/through_your_eyes_11-900x1200.jpg','Through your eyes','', '3/4'), tile('#/agenda','2025/01/will4.jpg','Kwa-art, Kwaremont','', '4/5')])}
+    <div class="cols"><div class="c3" style="grid-column:3 / span 2"><p><a class="arrow" href="#/werk">Bekijk al het werk →</a></p></div></div>
+  </div>`;
+}
+
+function vOpdrachten(){
+  return `<div class="pg">${back('#/','Terug')}<h1 class="ttl xl">Opdrachten</h1>
+    <div class="cols"><p class="lead c2" style="grid-column:2 / span 2">Een object dat precies past bij de plek: een tuin, een bedrijfssite of een event. William denkt mee over vorm, kleur, licht, vuur en materiaal.</p></div>
+    <div class="cols rule">
+      <div class="s2"><h2>Tuin en bedrijf</h2><p>Zoek je een blikvanger voor je tuin of bedrijf? Vertel wat je zoekt en William maakt dat ene object dat je hart sneller doet slaan. Elk uniek werk is genummerd en krijgt een certificaat van echtheid.</p><p><a class="arrow" href="#/contact">Vraag een werk op maat aan →</a></p></div>
+      <div class="s2"><h2>Events</h2><p>Organiseer je een event en zoek je iets wat echt verrast? Voor Tomorrowland maakte William twaalf vuurpilaren die het festival elk jaar opnieuw gebruikt. Laten we praten over vormen en kleuren, licht en vuur.</p><p><a class="arrow" href="#/contact">Bespreek je event →</a></p></div>
+    </div>
+    ${scatter([tile('#/opdrachten','2025/01/will5.jpg','Fujirebio, Zwijnaarde','', '4/5'), tile('#/werk/tomorrowland-flame-pillar','2024/09/IMG_0002.jpg','Tomorrowland, Boom','', '4/5'), tile('#/werk/through-your-eyes','2024/09/through_your_eyes_14-1200x800.jpg','RHS Hampton Court Palace','', '3/2'), tile('#/werk/ring-of-hope','2024/11/Ring-of-hope_4092-900x1200.jpg','Ring of hope','', '3/4')])}
+    <div class="cols"><div><h2>Werkwijze</h2></div><ol class="steps s3">
+      <li>Kennismaking: plek, sfeer, schaal en budget.</li>
+      <li>Schets en voorstel, met advies over verhoudingen, verlichting en plaatsing.</li>
+      <li>Maken in het eigen atelier in Laarne: snijden, rollen, buigen en lassen.</li>
+      <li>Levering en installatie, met genummerd certificaat van echtheid.</li></ol></div>
+  </div>`;
+}
+
+function vContact(){
+  return `<div class="pg">${back('#/','Terug')}<h1 class="ttl">Contact</h1>
+    <div class="cols">
+      <div><h3>Atelier</h3><p>Williams<br>William Roobrouck<br>Veldstraat 9<br>9270 Laarne</p></div>
+      <div><h3>Contact</h3><p><a href="tel:+32497535158">0497 53 51 58</a><br><a href="mailto:roobrouck.william@gmail.com">roobrouck.william@gmail.com</a></p><p class="muted">BE 0771 792 178</p></div>
+      <div class="s2"><h3>Volg</h3><p><a href="https://www.instagram.com/williams.art.design/" target="_blank" rel="noopener">Instagram</a><br><a href="https://www.facebook.com/WilliamsArtDesign/" target="_blank" rel="noopener">Facebook</a></p></div>
+    </div>
+    <div class="cols rule" id="cfw">
+      <div><h3>Stuur een bericht</h3><p class="muted">Over een werk, een opdracht of een event.</p></div>
+      <div class="s2">
+        <form class="cf" onsubmit="document.getElementById('cfw').classList.add('sent');return false">
+          <label>Naam<input name="naam"></label>
+          <label>E-mail *<input type="email" required></label>
+          <label>Telefoon *<input type="tel" required></label>
+          <label>Onderwerp<select><option>Interesse in een werk</option><option>Werk op maat</option><option>Event</option><option>Andere vraag</option></select></label>
+          <label>Opmerking<textarea></textarea></label>
+          <label class="chk"><input type="checkbox" required><span>Ik ga akkoord met de privacyverklaring.</span></label>
+          <button>Verzenden</button>
+        </form>
+        <p class="ok">Bedankt voor je bericht. William neemt zo snel mogelijk contact op.</p>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---------- Router ---------- */
+const app = $('#app');
+let listMode = 'list';
+function route(){
+  const h = location.hash.replace(/^#\/?/,'');
+  if (h.startsWith('s') && document.getElementById(h)) return;
+  const [a,b] = h.split('/');
+  let html, nav='';
+  switch(a){
+    case '': case undefined: html=vHome(); break;
+    case 'werk': html = b ? vWork(b) : vWorkList(listMode); nav='werk'; break;
+    case 'categorie': html=vCat(b); nav='werk'; break;
+    case 'agenda': html=vAgenda(); nav='agenda'; break;
+    case 'over': html=vOver(); nav='over'; break;
+    case 'opdrachten': html=vOpdrachten(); nav='opdrachten'; break;
+    case 'contact': html=vContact(); nav='contact'; break;
+    default: html=vHome();
+  }
+  document.body.classList.toggle('not-home', !!a);
+  app.innerHTML = `<div class="view">${html}</div>`;
+  document.querySelectorAll('[data-nav]').forEach(n=>n.classList.toggle('on', n.dataset.nav===nav));
+  closeMenus(); window.scrollTo(0,0); bind();
+  document.title = (a ? (app.querySelector('h1')?.textContent+' – ') : '') + 'Williams';
+}
+function bind(){
+  app.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{listMode=b.dataset.mode; app.innerHTML=`<div class="view">${vWorkList(listMode)}</div>`; bind();});
+  const pv = $('#pv');
+  if(pv){ const [i1,i2]=pv.querySelectorAll('img');
+    app.querySelectorAll('[data-pv]').forEach(a=>{
+      a.onmouseenter=()=>{const w=BY[a.dataset.pv],g=gal(w);i1.src=src(w.img);i2.src=src(g[1]||g[0]);pv.classList.add('on');a.classList.add('hl');};
+      a.onmouseleave=()=>{pv.classList.remove('on');a.classList.remove('hl');};
+    });
+  }
+  app.querySelectorAll('[data-scroll]').forEach(c=>c.onclick=e=>{e.preventDefault();document.getElementById(c.dataset.scroll).scrollIntoView({behavior:'smooth'});});
+  app.querySelectorAll('[data-top]').forEach(c=>c.onclick=e=>{e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});});
+  app.querySelectorAll('.tile.zoom').forEach(t=>t.onclick=e=>{e.preventDefault();openLb(t.querySelector('img').src);});
+}
+
+/* Lightbox for work images */
+const lb = document.createElement('div');
+lb.style.cssText='position:fixed;inset:0;background:#fff;z-index:80;display:none;align-items:center;justify-content:center;padding:70px 30px;cursor:zoom-out';
+lb.innerHTML='<img style="max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain" alt=""><span style="position:absolute;top:26px;right:30px;font-size:14px">Sluiten</span>';
+document.body.appendChild(lb);
+function openLb(s){lb.querySelector('img').src=s;lb.style.display='flex';}
+lb.onclick=()=>lb.style.display='none';
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){lb.style.display='none';closeMenus();}});
+
+/* Menu */
+const hd=$('#hd'), sub=$('#sub'), lang=$('#lang');
+function closeMenus(){document.body.classList.remove('menu-open');sub.classList.remove('open');lang.classList.remove('open');}
+$('#burger').onclick=()=>{const open=!document.body.classList.contains('menu-open');closeMenus();if(open)document.body.classList.add('menu-open');};
+$('#nav-werk').onclick=()=>sub.classList.toggle('open');
+sub.addEventListener('click',e=>{if(e.target.tagName==='A')closeMenus();});
+$('#lang-btn').onclick=e=>{e.stopPropagation();lang.classList.toggle('open');};
+document.querySelectorAll('[data-lang]').forEach(a=>a.onclick=e=>{e.preventDefault();$('#lang-btn').textContent=a.textContent;lang.classList.remove('open');});
+document.addEventListener('click',e=>{if(!lang.contains(e.target))lang.classList.remove('open');});
+
+/* Small wordmark appears after scrolling past the big one on home */
+window.addEventListener('scroll',()=>document.body.classList.toggle('show-mark',scrollY>220),{passive:true});
+
+window.addEventListener('hashchange',route);
+route();
+</script>
+</body>
+</html>

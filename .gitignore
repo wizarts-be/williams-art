@@ -1,0 +1,6 @@
+# Build-output (node scripts/build.mjs)
+dist/
+# Originelen van de oude site: te groot voor GitHub (video's > 100 MB). Opnieuw op te halen, zie PROJECT.md
+assets/origineel/
+.DS_Store
+node_modules/

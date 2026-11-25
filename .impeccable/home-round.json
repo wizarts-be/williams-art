@@ -1,0 +1,59 @@
+{
+  "title": "Homepage Williams: welke compositie?",
+  "question": "De stijl van de schets ligt vast (wit, zwart, Barlow Condensed, Inter, het woordmerk). Kies hoe de homepage het werk ontvouwt.",
+  "options": [
+    {
+      "id": "schaal",
+      "label": "Op ware grootte",
+      "kicker": "THE ROLL",
+      "lineage": "museumzaal met maatvoering, catalogus van monumentaal werk",
+      "thesis": "Elk werk verschijnt op zijn echte schaal, met een maatlijn erbij: 9 m, 3,5 ton.",
+      "palette": ["#ffffff", "#000000", "#8a8a8a", "#9a4a24"],
+      "materials": ["grote foto's, zo goed als schermvullend", "dunne maatlijnen met cijfers in Barlow Condensed"],
+      "viewport": "Het woordmerk williams klein bovenaan. Proud vult de hoogte, met rechts een verticale maatlijn '9 m' en eronder 'Knokke-Heist, 3,5 ton'.",
+      "risk": "Werkt alleen bij werken met bekende afmetingen; bij een derde van de werken ontbreken die.",
+      "wireframe": {"cols":12,"rows":10,"regions":[
+        {"label":"header + woordmerk","x":0,"y":0,"w":12,"h":1},
+        {"label":"monumentaal werk, volle hoogte","x":2,"y":1,"w":6,"h":8,"accent":true},
+        {"label":"maatlijn 9 m","x":8,"y":1,"w":1,"h":8},
+        {"label":"titel, plaats, gewicht","x":9,"y":6,"w":3,"h":2},
+        {"label":"volgende werk schuift in","x":0,"y":9,"w":12,"h":1}
+      ]}
+    },
+    {
+      "id": "stroken",
+      "label": "Bewegende stroken, verfijnd",
+      "lineage": "de goedgekeurde schets van de designer, naar het voorbeeld van Schupfer",
+      "thesis": "De schets zoals de klant hem goedkeurde, maar met rust, bijschriften en stroken die op het scrollen reageren.",
+      "palette": ["#ffffff", "#000000", "#8a8a8a", "#9a4a24"],
+      "materials": ["4 oneindige fotostroken op wisselende hoogte", "bijschrift onder het beeld in plaats van een donkere hover-laag"],
+      "viewport": "Een groot woordmerk williams met de slogan eronder, daarna de eerste strook die vertraagt en versnelt met het scrollen.",
+      "risk": "Ligt het dichtst bij wat de klant al zag; het verrast het minst.",
+      "wireframe": {"cols":12,"rows":10,"regions":[
+        {"label":"header","x":0,"y":0,"w":12,"h":1},
+        {"label":"woordmerk + slogan","x":2,"y":1,"w":6,"h":2},
+        {"label":"strook 1 (beweegt)","x":0,"y":3,"w":12,"h":3,"accent":true},
+        {"label":"strook 2","x":0,"y":6,"w":12,"h":3},
+        {"label":"chevron","x":5,"y":9,"w":2,"h":1}
+      ]}
+    },
+    {
+      "id": "index",
+      "label": "De index",
+      "lineage": "catalogue raisonné, de lijst van werken in een kunstboek",
+      "thesis": "De homepage is de lijst: 34 titels in groot Barlow Condensed, en het beeld volgt je cursor.",
+      "palette": ["#ffffff", "#000000", "#8a8a8a", "#9a4a24"],
+      "materials": ["grote titels met jaar en materiaal", "een zwevend beeld dat de cursor volgt"],
+      "viewport": "Links de titels, van Ring of Hope tot Proud, met kolommen voor jaar en materiaal. Rechts een groot beeld van de titel waar je over beweegt.",
+      "risk": "Typografie gaat voor beeld; op mobiel valt het hover-effect weg en wordt het een lijst met kleine beelden.",
+      "wireframe": {"cols":12,"rows":10,"regions":[
+        {"label":"header","x":0,"y":0,"w":12,"h":1},
+        {"label":"titels (34) + jaar + materiaal","x":0,"y":1,"w":7,"h":9,"accent":true},
+        {"label":"beeld volgt cursor","x":7,"y":2,"w":5,"h":6}
+      ]}
+    }
+  ],
+  "reroll": true,
+  "steer": true,
+  "buildPath": {"value": "code"}
+}
