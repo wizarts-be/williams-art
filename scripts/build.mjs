@@ -5,6 +5,8 @@ import path from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
 const OUT = root + 'dist/';
+// Basispad: '/' lokaal, '/williams-art/' op GitHub Pages (BASE=/williams-art/ node scripts/build.mjs)
+const BASE = process.env.BASE || '/';
 const works = JSON.parse(fs.readFileSync(root + 'data/works.json', 'utf8'));
 // Volgorde: nieuw eerst, dan recent naar oud, werken zonder jaar achteraan
 works.sort((a, b) => (b.isNew - a.isNew) || ((+b.year || 0) - (+a.year || 0)));
@@ -64,7 +66,7 @@ function shell({ title, desc, body, active = '', bodyClass = '' }) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
 <meta name="theme-color" content="#fcfcfb">
-<link rel="icon" href="/assets/origineel/logo/favicon.jpg">
+<link rel="icon" href="/assets/brand/favicon.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Tenor+Sans&display=swap" rel="stylesheet">
@@ -199,11 +201,6 @@ function home() {
   const body = `
 <section class="hero">
   <h1 class="hero-mark" aria-label="williams"><span class="hm-word">${'williams'.split('').map(c => `<span>${c}</span>`).join('')}</span></h1>
-  <div class="hero-side">
-    <p class="hero-sl">The Love story of art &amp; craft</p>
-    <p class="hero-p">Beelden in cortenstaal, staal, brons, licht en vuur, met de hand gemaakt door William Roobrouck in Laarne.</p>
-    <a class="link" href="/werk/">Bekijk het werk ${ICON.arrow}</a>
-  </div>
 </section>
 ${strip(STRIP)}
 <section class="scale" aria-labelledby="sc-t">
@@ -239,11 +236,12 @@ function write(rel, html) {
   const f = path.join(OUT, rel, 'index.html');
   fs.mkdirSync(path.dirname(f), { recursive: true });
   html = html.replace(/href="\/(?!assets\/)[^"#]+[^"]*"/g, 'href="/"'); // enkel home bestaat: interne links naar home
+  html = html.split('"/assets/').join(`"${BASE}assets/`).split(', /assets/').join(`, ${BASE}assets/`).split('href="/"').join(`href="${BASE}"`);
   fs.writeFileSync(f, html);
 }
 fs.rmSync(OUT, { recursive: true, force: true });
 write('', home());
-for (const d of ['assets/css', 'assets/js', 'assets/img', 'assets/video', 'assets/origineel/logo']) {
+for (const d of ['assets/css', 'assets/js', 'assets/img', 'assets/video', 'assets/brand']) {
   fs.mkdirSync(path.dirname(OUT + d), { recursive: true });
   fs.symlinkSync(root + d, OUT + d);
 }

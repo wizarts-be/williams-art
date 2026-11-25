@@ -4,3 +4,6 @@ dist/
 assets/origineel/
 .DS_Store
 node_modules/
+
+# Workflow wacht op token met workflow-scope (gh auth refresh -s workflow)
+.github/

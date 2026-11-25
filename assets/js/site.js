@@ -55,7 +55,6 @@
     const first = !store.get('intro'); store.set('intro', 1);
     gsap.timeline({ defaults: { ease: 'expo.out' } })
       .from(letters, { yPercent: 105, duration: first ? 1.5 : 1, stagger: first ? .07 : .03, delay: first ? .2 : 0 })
-      .from('.hero-side > *', { y: 20, opacity: 0, duration: 1.1, stagger: .08 }, '-=1')
       .from('.strip .st-cell', { y: 60, opacity: 0, duration: 1.4, stagger: .05 }, '-=1.1');
   }
 

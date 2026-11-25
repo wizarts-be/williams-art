@@ -96,7 +96,7 @@ main{padding-top:var(--hd)}
 .tile:hover .cap-t{color:var(--rust)}
 
 /* ---------- Home ---------- */
-.hero{display:grid;grid-template-columns:1fr minmax(260px,340px);align-items:end;gap:var(--gut);padding:clamp(48px,7vw,96px) var(--gut) 48px calc(var(--gut) + 12%)}
+.hero{display:block;padding:clamp(48px,7vw,96px) var(--gut) 48px calc(var(--gut) + 12%)}
 .hero-mark{font:400 clamp(84px,15vw,236px)/.82 var(--display);letter-spacing:-.01em;margin:0 0 -.06em -.04em}
 .hm-word{display:inline-flex;overflow:hidden;padding-bottom:.08em}
 .hm-word span{display:inline-block}
@@ -440,7 +440,7 @@ a.os:hover .os-img{transform:translateY(-6px)}
   .menu-open .lang-b{display:none}
   .menu-open .lang ul{display:flex;position:static;border:0;padding:0;gap:18px;background:none;animation:none}
   .menu-open .lang li a{font-size:16px}
-  .hero{grid-template-columns:1fr;padding:44px var(--gut) 36px}
+  .hero{padding:44px var(--gut) 36px}
   .hero-mark{font-size:clamp(60px,20vw,130px)}
   .strip{height:440px}
   .st-cell{width:62vw}
