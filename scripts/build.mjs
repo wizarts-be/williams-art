@@ -327,7 +327,7 @@ function write(rel, html) {
   fs.mkdirSync(path.dirname(f), { recursive: true });
   // Links naar pagina's die (nog) niet bestaan gaan naar home
   html = html.replace(/href="(\/(?!assets\/)[^"#]*)"/g, (m, u) => (u === '/' || KNOWN.test(u)) ? m : 'href="/"');
-  html = html.replace(/(href|src|poster|data-full|data-img)="\//g, `$1="${BASE}`).split(', /assets/').join(`, ${BASE}assets/`);
+  html = html.replace(/(href|src|srcset|poster|data-full|data-img)="\//g, `$1="${BASE}`).split(', /assets/').join(`, ${BASE}assets/`);
   fs.writeFileSync(f, html);
 }
 fs.rmSync(OUT, { recursive: true, force: true });
